@@ -1,0 +1,135 @@
+<!DOCTYPE html>
+<html>
+  <head>
+    <title>Spreedly CVV Iframe</title>
+    <meta http-equiv="content-type" content="text/html; charset=utf-8" />
+    <style type="text/css">
+      input {
+        background: transparent;
+        border-style:none;
+      }
+      body {
+        background: transparent;
+        margin: 0px;
+      }
+      /* Don't show the number increment/decrement spinner in number fields */
+      input[type=number]::-webkit-inner-spin-button,
+      input[type=number]::-webkit-outer-spin-button {
+        -webkit-appearance: none;
+        margin: 0;
+      }
+      input[type='number'] {
+        -moz-appearance:textfield;
+      }
+      input:invalid, textarea:invalid{
+        box-shadow: none;
+      }
+      input:focus {
+        outline: none;
+      }
+      .visuallyhidden {
+        border: 0;
+        clip: rect(0 0 0 0);
+        height: 1px;
+        margin: -1px;
+        overflow: hidden;
+        padding: 0;
+        position: absolute;
+        width: 1px;
+      }
+    </style>
+    <script>
+      var uniqueId = window.name.replace('spreedly-cvv-frame-','');
+      var numberWindowName = "spreedly-number-frame-" + uniqueId;
+
+      window.notifyEvent = function(name, notification, addActiveField){
+        var activeField = ''
+        if (addActiveField && document.hasFocus()) {
+          activeField = 'cvv'
+        }
+        window.parent.postMessage((uniqueId + 'notifyEvent( ' + name + '): ' + notification + ":" + activeField), '*');
+      }
+
+      window.onfocus = function(){
+        document.getElementById('cvv').focus();
+      }
+
+      var handleKeyUp = function(e){
+        if (!e){
+          return
+        }
+        if (e.keyCode == 13){
+          e.preventDefault();
+          e.stopPropagation();
+          notifyEvent('cvv', 'enter');
+        } else if (e.keyCode == 27){
+          e.preventDefault();
+          e.stopPropagation();
+          notifyEvent('cvv', 'escape');
+        }  else if (e.keyCode == 38 || e.keyCode == 40){
+          e.preventDefault();
+          e.stopPropagation();
+        } else if (cvvField.value.length > 4 ){
+          cvvField.value = cvvField.value.substring(0,4);
+        }
+      }
+      var handleKeyDown = function(e){
+        if (!e){
+          return
+        }
+        if (e.keyCode == 9 && e.shiftKey){
+          notifyEvent('cvv', 'shiftTab')
+        } else if (e.keyCode == 9){
+          notifyEvent('cvv', 'tab')
+        } else if (e.keyCode == 27){
+          e.preventDefault();
+          e.stopPropagation();
+          notifyEvent('cvv', 'escape');
+        }  else if (e.keyCode == 38 || e.keyCode == 40){
+          e.preventDefault();
+          e.stopPropagation();
+        }
+      }
+
+      var removeSelection = function(){
+        if (window.getSelection){
+          window.getSelection().removeAllRanges();
+        }
+      }
+
+
+      var establishCommunication = function(){
+        try{
+          if(window.parent.frames[numberWindowName] && window.parent.frames[numberWindowName].setUpCvv ){
+            window.parent.frames[numberWindowName].setUpCvv();
+            clearInterval(messageInterval)
+          }
+        } catch(err){};
+      }
+
+      window.stopMessages = function(){
+        clearInterval(messageInterval)
+      }
+
+    </script>
+  </head>
+  <body>
+
+
+  <form accept-charset="UTF-8" action="javascript:void(0);" id="cvv-form" onsubmit="return false;">
+    <label for="cvv" class="visuallyhidden" id="cvv_label">CVV</label>
+    <input type="number" id="cvv" size="4" autocomplete="off"
+    onblur="notifyEvent('cvv', 'blur', false);  removeSelection()"
+    onfocus="notifyEvent('cvv', 'focus', false)"
+    onmouseover="notifyEvent('cvv', 'mouseover', true)"
+    onmouseout="notifyEvent('cvv', 'mouseout', true)"
+    onkeyup="handleKeyUp(event)"
+    onkeydown="handleKeyDown(event)">
+  </form>
+
+  <script>
+     messageInterval = setInterval(establishCommunication, 5);
+     cvvField = document.getElementById('cvv');
+  </script>
+
+</body></html>

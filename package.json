@@ -1,0 +1,27 @@
+{
+  "name": "pci",
+  "version": "1.0.0",
+  "description": "Pci demo",
+  "main": "index.js",
+  "scripts": {
+    "test": "echo \"Error: no test specified\" && exit 1"
+  },
+  "repository": {
+    "type": "git",
+    "url": "git+https://github.com/jpcode/PCI-IFRAME.git"
+  },
+  "keywords": [
+    "pci",
+    "SAQ-A",
+    "js"
+  ],
+  "author": "jpcode (john cardenas)",
+  "license": "ISC",
+  "bugs": {
+    "url": "https://github.com/jpcode/PCI-IFRAME/issues"
+  },
+  "homepage": "https://github.com/jpcode/PCI-IFRAME#readme",
+  "dependencies": {
+    "http-server": "^0.10.0"
+  }
+}
