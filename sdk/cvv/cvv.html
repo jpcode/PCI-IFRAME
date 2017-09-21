@@ -39,8 +39,8 @@
       }
     </style>
     <script>
-      var uniqueId = window.name.replace('spreedly-cvv-frame-','');
-      var numberWindowName = "spreedly-number-frame-" + uniqueId;
+      var uniqueId = '1001';
+      var numberWindowName = "spreedly-number-frame-1001";
 
       window.notifyEvent = function(name, notification, addActiveField){
         var activeField = ''
@@ -97,14 +97,17 @@
         }
       }
 
-
+      var pepe = null; 
       var establishCommunication = function(){
+        console.log("establishCommunication");
         try{
           if(window.parent.frames[numberWindowName] && window.parent.frames[numberWindowName].setUpCvv ){
             window.parent.frames[numberWindowName].setUpCvv();
             clearInterval(messageInterval)
           }
-        } catch(err){};
+        } catch(err){
+          //console.log( err );
+        };
       }
 
       window.stopMessages = function(){
