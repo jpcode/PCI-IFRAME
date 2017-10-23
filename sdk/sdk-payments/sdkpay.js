@@ -8,15 +8,17 @@ function Sdkpay(){
         var data = event.data;
         var msg = null;
         // validate for origin
-
+        console.log( data );
         if ( data === "iframesReady" ){
             //method used by the consumer
             Sdkpay.ready();
-        }else if ( data === "errors"){
+        }/*
+        else if ( data === "errors"){
             Sdkpay.error()
         }else if (msg = data.match(/errors: (.*)/i)){
             Sdkpay.error( JSON.parse(r[1]) );
         }
+        */
    }
    this.log = function( log ){
         if ( window.console && this.developer ){

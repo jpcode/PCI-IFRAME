@@ -1,5 +1,28 @@
 /* messenger */
 
+function luhn_algorithm( ccn ){
+  /*
+      https://en.wikipedia.org/wiki/Luhn_algorithm
+  */
+  ccn = ccn.replace(/\D/g, "");
+  var len = ccn.length, 
+      i = len - 1, 
+      dup = false,
+      sum = 0,
+      dig;
+
+  for ( ; i >= 0; i-- ){
+    dig = parseInt( ccn[ i ] );
+    if ( dup ){
+       dig *= 2;
+       dig = dig > 10 && ( dig - 9 ) || dig;
+    }
+    sum += dig;
+    dup = !dup;
+  }
+    return sum % 10 === 0 ? ccn : false;
+}
+
 function cardValidation( type ){
 	return {
 		cvv : function( cvv ){
@@ -7,7 +30,9 @@ function cardValidation( type ){
 		},
 
 		ccn : function( ccn ){
-			return true;
+      console.log( ccn );
+			if ( /[^0-9-\s]+/.test(ccn) ) return false;
+      return luhn_algorithm( ccn );
 		},
 
 		zip : function( zip ){
@@ -15,6 +40,7 @@ function cardValidation( type ){
 		}
 	}[ type ];
 }
+
 
 
 function utils(){
@@ -144,11 +170,12 @@ function messenger(){
     this.inputProperties = function(){
 
     	 var cvvField = this.cvvField.value;
-         var inputs = {};
-         var numberField = this.numberField.value;
-         /* do validations here */
-         inputs["cvv"] = cardValidation("cvv")(cvvField) ? cvvField : false;
-		 inputs["ccn"] = cardValidation("ccn")(numberField) ? numberField : false;
+       var inputs = {};
+       var numberField = this.numberField.value;
+
+          /* do validations here */
+        inputs["cvv"] = cardValidation("cvv")(cvvField) ? cvvField : false;
+		    inputs["ccn"] = cardValidation("ccn")(numberField);
 
 		 return	 inputs;
     }
@@ -171,13 +198,13 @@ function messenger(){
     this.buildPaymentMethodBody = function(){
     	return {
     		number : this.numberField.value,
-            verification_value : this.cvvField.value
+        verification_value : this.cvvField.value
     	}
     }
 
     this.getToken = function() {
      var body = this.buildPaymentMethodBody();
-     var url = "http://localhost:3000/token";
+     var url = "http://localhost:5000/token";
      console.log(JSON.stringify( body ));
      var u = this.utils;
     	 u.ajax.post( url, JSON.stringify( body ), function( response ){
@@ -205,7 +232,14 @@ function messenger(){
 /* end messenger */
 function setUpEvents( id ){
 	
-	var onkeyup = function( event ){
+	var format = function( event ){
+    var ccn = document.getElementById('card_number');
+    ccn.value = ccn.value.replace(/\W/gi, '').replace(/(.{4})/g, '$1 ');
+  }
+
+  var onkeyup = function( event ){
+     console.log('keyup', event );
+     format();
 		 if (!event ) return;
 		 if ( event.keyCode === 13 ){
 		 	event.preventDefault();
@@ -218,17 +252,19 @@ function setUpEvents( id ){
 		 }
 	}
 
+  
 	var onkeydown = function( event ){
-		if ( !event ) return;
+	    if ( !event ) return;
 	    if ( event.keyCode === 9 && event.shiftKey ){
 	    	notifyEvent("number","shiftTab");
 	    }else if ( event.keyCode === 9 ){
 	    	notifyEvent("number","tab");
 	    }
+
 	}
 
-	var card_number = document.getElementById( id );
-    
+	  var card_number = document.getElementById( id );
+    var me = this;
     card_number.onkeyup = function(e) {
                 onkeyup( e )
             }

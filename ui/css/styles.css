@@ -1,5 +1,4 @@
-/* Basic Layout
----------------------------------------------------------------- */
+
 * {
   box-sizing: border-box;
 }
@@ -8,12 +7,12 @@ body {
   background: #ebf1f5;
   font-family: sans-serif;
   font-size: 100%;
-  color: #555;
+  color: #333333;
   margin: 0;
   padding: 0;
 }
 
-.spf-form {
+.sdkpay-form {
   background: #fff;
   box-shadow: rgba(0,0,0,.15) 0 2px 20px,
               rgba(0,0,0,.1) 0 0 3px;
@@ -32,7 +31,7 @@ fieldset {
   border-bottom: 1px solid #d2d8dc;
 }
 
-.spf-field-submit {
+.sdkpay-field-submit {
   border-bottom: none;
   margin-bottom: 0;
   padding-bottom: 2.5em;
@@ -41,11 +40,11 @@ fieldset {
 h2 {
   font-weight: 100;
   font-size: 1.35em;
-  color: #41637b;
+  color: #333333;
   margin-top: 0;
 }
 
-.spf-field {
+.sdkpay-field {
   display: inline-block;
   width: 100%;
   margin-bottom: 1.5em;
@@ -58,13 +57,13 @@ label {
   overflow: hidden;
 }
 
-.spf-label-secondary {
+.sdkpay-label-secondary {
   color: #999;
   font-size: .8125em;
   margin-top: .5em;
 }
 
-.spf-input-text {
+.sdkpay-input-text {
   display: block;
   width: 100%;
   border-radius: 3px;
@@ -74,65 +73,63 @@ label {
 }
 
 
-/* Specific Fields
----------------------------------------------------------------- */
 
-/* Name */
 
-.spf-fs-name .spf-field {
+
+
+.sdkpay-fs-name .sdkpay-field {
   width: 46%;
   margin-right: 2%;
 }
 
-.spf-field-lname {
+.sdkpay-field-lname {
   margin-right: 0;
 }
 
-/* Address */
 
-.spf-field-city {
+.sdkpay-field-city {
   width: 41%;
   margin-right: 2%;
 }
 
-.spf-field-state {
+.sdkpay-field-state {
   width: 15%;
   margin-right: 2%;
 }
 
-.spf-field-postcode {
+.sdkpay-field-postcode {
   width: 25%;
 }
 
-/* Iframe divs */
-.spf-field-cc{
+
+.sdkpay-field-cc{
   height:50px;
 }
 
-.spf-number{
+.sdkpay-number{
   width:67%;
 }
 
-.spf-verification_value{
+.sdkpay-verification_value{
   width:30%;
 }
 
 
-/* Expiry Date */
 
-.spf-field-group {
+
+.sdkpay-field-group {
   display: inline-block;
 }
 
-.spf-month {
+.sdkpay-month {
   width: 20%;
 }
 
-.spf-year {
+.sdkpay-year {
   width: 30%;
 }
 
-.spf-exp-divider {
+.sdkpay-exp-divider {
   display: inline-block;
   margin: 0 .4em;
   font-size: 150%;
@@ -142,13 +139,12 @@ label {
 }
 
 
-/* Button */
 
 .button {
   display: inline-block;
   width: 100%;
-  border-radius: 3px;
-  background: #41637b;
+  border-radius: 2rem;
+  background: #000;
   color: #fff;
   padding: .75em 2em;
   font-size: 100%;
@@ -156,14 +152,14 @@ label {
   cursor: pointer;
 }
 .button:hover {
-  background: #537e9d;
+  background: #3b3333;
 }
 .button:active {
   position: relative;
   top: 1px;
 }
 
-/* Message */
+
 
 #errors,
 #message {
@@ -177,15 +173,15 @@ label {
 }
 
 
-/* Small Screen Modifications*/
+
 
 @media screen and (max-width: 400px) {
-  .spf-form {
+  .sdkpay-form {
     margin: 0 auto;
   }
 }
 @media screen and (max-width: 625px) {
-  .spf-form {
+  .sdkpay-form {
     width: 80%;
   }
 }

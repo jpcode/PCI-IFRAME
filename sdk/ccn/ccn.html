@@ -42,7 +42,7 @@
 <body>
   <form accept-charset="UTF-8" action="javascript:void(0);" id="number-form" onsubmit="return false;">
     <label for="card_number" class="visuallyhidden" id="number_label">Card Number</label>
-    <input type="number" pattern="[0-9]*" name="card_number" id="card_number" autocomplete="off" size="19"></input>
+    <input pattern="\d*" maxlength="19" type="tel" name="card_number" id="card_number" autocomplete="off" size="19"></input>
   </form>
 
   <script>

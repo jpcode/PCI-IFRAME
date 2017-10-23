@@ -1,56 +1,28 @@
 <html><head>
   <meta charset="utf-8">
   <meta name="viewport" content="width=device-width">
-  <title>Spreedly Sample iFrame Payment Page</title>
+  <title>Sdkpay</title>
   <link rel="stylesheet" type="text/css" href="css/styles.css">
   <script src="http://localhost:70/sdk-payments/sdkpay.js"></script>
 </head>
 
 <body>
 
-  <form id="payment-form" accept-charset="UTF-8" class="spf-form" method="POST" action="#" onsubmit="submitPaymentForm(); return false;">
+  <form id="payment-form" accept-charset="UTF-8" class="sdkpay-form" method="POST" action="#" onsubmit="submitPaymentForm(); return false;">
 
     <input type="hidden" name="payment_method_token" id="payment_method_token" value="">
-
-    <fieldset class="spf-fs-name">
-      <h2>Name</h2>
-      <div class="spf-field spf-field-fname">
-        <label class="internal" for="spf-fname">First Name</label>
-        <input type="text" class="spf-input-text" id="first_name">
-      </div>
-      <div class="spf-field spf-field-lname">
-        <label class="internal" for="spf-lname">Last Name</label>
-        <input type="text" class="spf-input-text" id="last_name">
-      </div>
-    </fieldset>
-
-    <fieldset class="spf-fs-cc">
-      <h2>Payment Details</h2>
-
-      <div class="spf-field">
-        <label class="spf-field-group spf-number">Credit Card Number</label>
-        <label class="spf-field-group spf-verification_value">CVV</label>
-        <div id="spreedly-number-test" class="spf-field-group spf-number spf-field-cc">
+    <fieldset class="sdkpay-fs-cc">
+      <div class="sdkpay-field">
+        <label class="sdkpay-field-group sdkpay-number">Credit Card Number</label>
+        <label class="sdkpay-field-group sdkpay-verification_value">ZIP</label>
+        <div id="spreedly-number-test" class="sdkpay-field-group sdkpay-number sdkpay-field-cc">
         <iframe frameborder="0" width="100%" height="100%" scrolling="no" id="spreedly-number-frame-1001" name="spreedly-number-frame-1001" src="http://localhost:70/ccn/ccn.html"></iframe></div>
-        <div id="spreedly-cvv-test" class="spf-field-group spf-verification_value spf-field-cc">
+        <div id="spreedly-cvv-test" class="sdkpay-field-group sdkpay-verification_value sdkpay-field-cc">
         <iframe frameborder="0" width="100%" height="100%" scrolling="no" id="spreedly-cvv-frame-1001" name="spreedly-cvv-frame-1001" src="http://localhost:70/cvv/cvv.html"></iframe></div>
       </div>
-
-      <div class="spf-field spf-field-exp">
-        <label>Expiration Date</label>
-        <div class="spf-field-group spf-month">
-          <input type="text" class="spf-input-text spf-exp" id="month" size="3" maxlength="2" placeholder="MM">
-          <!-- <label class="spf-label-secondary" for="spf-exp-m">Month (MM)</label> -->
-        </div>
-        <span class="spf-exp-divider">/</span>
-        <div class="spf-field-group spf-year">
-          <input type="text" class="spf-input-text spf-exp" id="year" size="5" maxlength="4" placeholder="YYYY">
-          <!-- <label class="spf-label-secondary" for="spf-exp-y">Year (YYYY)</label> -->
-        </div>
-      </div>
     </fieldset>
 
-    <fieldset class="spf-field-submit">
+    <fieldset class="sdkpay-field-submit">
       <input type="submit" class="button" value="Submit Payment">
       <div id="message"></div>
       <div id="errors"></div>
@@ -81,7 +53,7 @@
 
       var normalBorder = "1px solid #ccc";
 
-      var paymentMethodFields = ['first_name', 'last_name', 'month', 'year']
+      var paymentMethodFields = [];
       options = {};
       for(var i = 0; i < paymentMethodFields.length; i++) {
         var field = paymentMethodFields[i];
