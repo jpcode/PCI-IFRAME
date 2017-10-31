@@ -35,6 +35,33 @@
       position: absolute;
       width: 1px;
     }
+    .default-card{
+      content:url('images/credit-card-default.png');
+    }
+
+    .invalid-card{
+      content:url('images/invalid-card128x128.png');
+    }
+
+    .american-express{
+      content:url('images/amex128x128.png');
+    }
+
+    .visa{
+      content:url('images/visa128x128.svg');
+    }
+
+    .discover{
+      content:url('images/discover128x128.png');
+    }
+
+    .mastercard{
+      content:url('images/mastercard128x128.png');
+    }
+
+    .input-ccn{
+      padding-left: 53px !important;
+    }
   </style>
   <script src="sdk/ccn.js?restricted=true"></script>
 
@@ -42,7 +69,9 @@
 <body>
   <form accept-charset="UTF-8" action="javascript:void(0);" id="number-form" onsubmit="return false;">
     <label for="card_number" class="visuallyhidden" id="number_label">Card Number</label>
-    <input pattern="\d*" maxlength="19" type="tel" name="card_number" id="card_number" autocomplete="off" size="19"></input>
+    <span id = "span-card" style = "position: absolute; left: 10px; top: 0px; width : 40px" 
+    class = "default-card"></span>
+    <input class = "input-ccn" pattern="\d*" maxlength="19" type="tel" name="card_number" id="card_number" autocomplete="off" size="19"></input>
   </form>
 
   <script>

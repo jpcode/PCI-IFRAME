@@ -1,14 +1,17 @@
-function Sdkpay(){
-   
+function Sdkpay( api_key ){
    this.developer = true;
    this.frameOrigin = "http://localhost:70";
+
+   this.createToken = function(){
+      return this.sendMessage("getToken")
+   }
+
    this.buildMessageHandler = function( event ) {
         var me = this;
         var origin = event.origin;
         var data = event.data;
         var msg = null;
         // validate for origin
-        console.log( data );
         if ( data === "iframesReady" ){
             //method used by the consumer
             Sdkpay.ready();
@@ -25,11 +28,7 @@ function Sdkpay(){
              console.log( log );
         }
    }
-   
-   this.tokenizeCreditCard = function(e) {
-        return this.sendMessage("getToken")
-   }
-   
+      
    this.init = function( e, t ){
         this.log("init sdk"); 
         this.numberFrameId = "spreedly-number-frame-1001";
@@ -53,8 +52,10 @@ function Sdkpay(){
 }
 
 
-var sdk = new Sdkpay();
-window.Sdkpay = sdk;
+var sdk = function( api_key ){
+  return new Sdkpay( api_key );
+}
+window.Sdkpay = sdk();
 
 
 /*

@@ -1,0 +1,331 @@
+<html><head>
+  <meta charset="utf-8">
+  <meta name="viewport" content="width=device-width">
+  <title>Sdkpay</title>
+  <link rel="stylesheet" type="text/css" href="css/styles.css">
+  <script src="http://localhost:70/sdk-payments/sdkpay.js"></script>
+</head>
+
+<body>
+  <!--
+  <form id="payment-form" accept-charset="UTF-8" class="sdkpay-form" method="POST" action="#" onsubmit="submitPaymentForm(); return false;">
+
+    <input type="hidden" name="payment_method_token" id="payment_method_token" value="">
+    <fieldset class="sdkpay-fs-cc">
+      <div class="sdkpay-field">
+        <label class="sdkpay-field-group sdkpay-number">Credit Card Number</label>
+        <label class="sdkpay-field-group sdkpay-verification_value">ZIP</label>
+        <div id="spreedly-number-test" class="sdkpay-field-group sdkpay-number sdkpay-field-cc">
+        <iframe frameborder="0" width="100%" height="100%" scrolling="no" id="spreedly-number-frame-1001" name="spreedly-number-frame-1001" src="http://localhost:70/ccn/ccn.html"></iframe></div>
+        <div id="spreedly-cvv-test" class="sdkpay-field-group sdkpay-verification_value sdkpay-field-cc">
+        <iframe frameborder="0" width="100%" height="100%" scrolling="no" id="spreedly-cvv-frame-1001" name="spreedly-cvv-frame-1001" src="http://localhost:70/cvv/cvv.html"></iframe></div>
+      </div>
+    </fieldset>
+
+    <fieldset class="sdkpay-field-submit">
+      <input type="submit" class="button" value="Submit Payment">
+      <div id="message"></div>
+      <div id="errors"></div>
+    </fieldset>
+
+    <script id="spreedly-iframe" data-environment-key="TbWAYgG7qaagGBh7hPjXQxS4DM4" data-number-id="spreedly-number-test" data-cvv-id="spreedly-cvv-test">
+    </script>
+  </form>
+  -->
+  <div class="globalContent">
+    <main>
+    <section class="container-lg">
+      <!--Example 2-->
+      <div class="cell example example2">
+        <form>
+          <div class="row">
+            <div class="field">
+              <input id="example2-address" class="input empty" type="text" placeholder="185 Berry St" required="">
+              <label for="example2-address">Address</label>
+              <div class="baseline"></div>
+            </div>
+          </div>
+          <div class="row">
+            <div class="field half-width">
+              <input id="example2-city" class="input empty" type="text" placeholder="San Francisco" required="">
+              <label for="example2-city">City</label>
+              <div class="baseline"></div>
+            </div>
+            <div class="field quarter-width">
+              <input id="example2-state" class="input empty" type="text" placeholder="CA" required="">
+              <label for="example2-state">State</label>
+              <div class="baseline"></div>
+            </div>
+          </div>
+          <div class="row">
+            <div class="field">
+              <div id="example2-card-number" class="input empty"></div>
+              <label for="example2-card-number">Card Number</label>
+              <div class="baseline"></div>
+            </div>
+          </div>
+          <div class="row">
+            <div class="field half-width">
+              <div id="example2-card-expiry" class="input empty"></div>
+              <label for="example2-card-expiry">Expiration</label>
+              <div class="baseline"></div>
+            </div>
+            <div class="field half-width">
+              <div id="example2-card-cvc" class="input empty"></div>
+              <label for="example2-card-cvc">Zip</label>
+              <div class="baseline"></div>
+            </div>
+          </div>
+          <input type="submit" value="Add card">
+        </form>
+        
+        <div class="success">
+          
+        </div>
+
+      </div>
+    </section>
+    </main>
+  </div>
+  <script>
+
+
+var sdk = Sdkpay('c16f8a7e-43c2-4f2c-89b4-05533a71edb9');
+
+function registerElements(elements, exampleName) {
+  var formClass = '.' + exampleName;
+  var example = document.querySelector(formClass);
+
+  var form = example.querySelector('form');
+  var resetButton = example.querySelector('a.reset');
+  var error = form.querySelector('.error');
+  var errorMessage = error.querySelector('.message');
+
+  function enableInputs() {
+    Array.prototype.forEach.call(
+      form.querySelectorAll(
+        "input[type='text'], input[type='email'], input[type='tel']"
+      ),
+      function(input) {
+        input.removeAttribute('disabled');
+      }
+    );
+  }
+
+  function disableInputs() {
+    Array.prototype.forEach.call(
+      form.querySelectorAll(
+        "input[type='text'], input[type='email'], input[type='tel']"
+      ),
+      function(input) {
+        input.setAttribute('disabled', 'true');
+      }
+    );
+  }
+
+  // Listen for errors from each Element, and show error messages in the UI.
+  elements.forEach(function(element) {
+    element.on('change', function(event) {
+      if (event.error) {
+        error.classList.add('visible');
+        errorMessage.innerText = event.error.message;
+      } else {
+        error.classList.remove('visible');
+      }
+    });
+  });
+
+  // Listen on the form's 'submit' handler...
+  form.addEventListener('submit', function(e) {
+    e.preventDefault();
+
+    // Show a loading screen...
+    example.classList.add('submitting');
+
+    // Disable all inputs.
+    disableInputs();
+
+    // Gather additional customer data we may have collected in our form.
+    var name = form.querySelector('#' + exampleName + '-name');
+    var address1 = form.querySelector('#' + exampleName + '-address');
+    var city = form.querySelector('#' + exampleName + '-city');
+    var state = form.querySelector('#' + exampleName + '-state');
+    var zip = form.querySelector('#' + exampleName + '-zip');
+    var additionalData = {
+      name: name ? name.value : undefined,
+      address_line1: address1 ? address1.value : undefined,
+      address_city: city ? city.value : undefined,
+      address_state: state ? state.value : undefined,
+      address_zip: zip ? zip.value : undefined,
+    };
+
+    // Use Stripe.js to create a token. We only need to pass in one Element
+    // from the Element group in order to create a token. We can also pass
+    // in the additional customer data we collected in our form.
+    stripe.createToken(elements[0], additionalData).then(function(result) {
+      // Stop loading!
+      example.classList.remove('submitting');
+
+      if (result.token) {
+        // If we received a token, show the token ID.
+        example.querySelector('.token').innerText = result.token.id;
+        example.classList.add('submitted');
+      } else {
+        // Otherwise, un-disable inputs.
+        enableInputs();
+      }
+    });
+  });
+
+  resetButton.addEventListener('click', function(e) {
+    e.preventDefault();
+    // Resetting the form (instead of setting the value to `''` for each input)
+    // helps us clear webkit autofill styles.
+    form.reset();
+
+    // Clear each Element.
+    elements.forEach(function(element) {
+      element.clear();
+    });
+
+    // Reset error state as well.
+    error.classList.remove('visible');
+
+    // Resetting the form does not un-disable inputs, so we need to do it separately:
+    enableInputs();
+    example.classList.remove('submitted');
+  });
+}
+
+  (function() {
+  'use strict';
+  /*
+  var elements = stripe.elements({
+    fonts: [
+      {
+        cssSrc: 'https://fonts.googleapis.com/css?family=Source+Code+Pro',
+      },
+    ],
+  });
+  */
+
+  // Floating labels
+  var inputs = document.querySelectorAll('.cell.example.example2 .input');
+  Array.prototype.forEach.call(inputs, function(input) {
+    input.addEventListener('focus', function() {
+      input.classList.add('focused');
+    });
+    input.addEventListener('blur', function() {
+      input.classList.remove('focused');
+    });
+    input.addEventListener('keyup', function() {
+      if (input.value.length === 0) {
+        input.classList.add('empty');
+      } else {
+        input.classList.remove('empty');
+      }
+    });
+  });
+
+  var elementStyles = {
+    base: {
+      color: '#32325D',
+      fontWeight: 500,
+      fontFamily: 'Source Code Pro, Consolas, Menlo, monospace',
+      fontSize: '16px',
+      fontSmoothing: 'antialiased',
+
+      '::placeholder': {
+        color: '#CFD7DF',
+      },
+      ':-webkit-autofill': {
+        color: '#e39f48',
+      },
+    },
+    invalid: {
+      color: '#E25950',
+
+      '::placeholder': {
+        color: '#FFCCA5',
+      },
+    },
+  };
+
+  var elementClasses = {
+    focus: 'focused',
+    empty: 'empty',
+    invalid: 'invalid',
+  };
+
+  var cardNumber = elements.create('cardNumber', {
+    style: elementStyles,
+    classes: elementClasses,
+  });
+  cardNumber.mount('#example2-card-number');
+
+  var cardExpiry = elements.create('cardExpiry', {
+    style: elementStyles,
+    classes: elementClasses,
+  });
+  cardExpiry.mount('#example2-card-expiry');
+
+  var cardCvc = elements.create('cardCvc', {
+    style: elementStyles,
+    classes: elementClasses,
+  });
+  cardCvc.mount('#example2-card-cvc');
+
+  registerElements([cardNumber, cardExpiry, cardCvc], 'example2');
+})();
+
+/*
+  Sdkpay.init({
+      KEYID : '123123'
+  });
+  Sdkpay.ready = function(){
+      //you can use this for setting some styles to iframes
+      console.log('ready to use' );
+      Sdkpay.setStyle('number','width: 67%; border-radius: 3px; border: 1px solid #ccc; padding: .65em .5em .65em 0px; font-size: 91%;');
+      Sdkpay.setStyle('cvv', 'width: 30%; border-radius: 3px; border: 1px solid #ccc; padding: .65em .5em; font-size: 91%;');
+  }
+
+  Sdkpay.paymentMethod = function( token, data ){
+     console.log("on payment method");
+  }
+
+  Sdkpay.error = function( errors ){
+    console.log("errors");
+  }
+
+  function submitPaymentForm() {
+
+      var normalBorder = "1px solid #ccc";
+
+      var paymentMethodFields = [];
+      options = {};
+      for(var i = 0; i < paymentMethodFields.length; i++) {
+        var field = paymentMethodFields[i];
+
+        // Reset existing styles (to clear previous errors)
+        var fieldEl = document.getElementById(field);
+        fieldEl.style.border = normalBorder;
+
+        // add value to options
+        options[field]  = fieldEl.value
+      }
+
+      // Reset frame styles
+      Sdkpay.setStyle('number', "border: " + normalBorder + ";");
+      Sdkpay.setStyle('cvv', "border: " + normalBorder + ";");
+
+      // Reset previous messages
+      document.getElementById('errors').innerHTML = "";
+      document.getElementById('message').innerHTML = "";
+
+      // Tokenize!
+      Sdkpay.tokenizeCreditCard();
+    }
+    */
+  </script>
+</body>
+</html>

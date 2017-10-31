@@ -2,17 +2,18 @@
 var NodeRSA = require('node-rsa');
 var key = new NodeRSA({b: 512});
 
-var epay = function( ){
-
+var epay = function(argument) {
+  var error_handler = {
+    
+  }
 }
 
 var appRouter = function(app) {
-	 app.get("/payments", function(req, res) {
+	app.get("/payments", function(req, res) {
 	 	var ccnCvv = '4634030103951029-069';
 		var encrypted = key.encrypt(ccnCvv, 'base64');
 		var decrypted = key.decrypt(encrypted, 'utf8');
-		console.log('decrypted: ', decrypted);
-	    res.send(encrypted);
+		res.send(encrypted);
 	});
 
 	app.post('/token', function (req, res) {
@@ -20,7 +21,7 @@ var appRouter = function(app) {
 		var number = data['number'];
 		var verification = data['verification_value'];
 		var token =  key.encrypt(number + verification, 'base64');
-  		res.send(token);
+  	res.send(token);
 	});
 }
  
