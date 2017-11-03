@@ -781,7 +781,7 @@ main > .container-lg .example .success .reset svg {
   width: calc(100% - 30px);
   height: 40px;
   margin: 40px 15px 0;
-  background-color: #24b47e;
+  background-color: #000;
   border-radius: 4px;
   color: #fff;
   text-transform: uppercase;
