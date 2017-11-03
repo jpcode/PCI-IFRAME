@@ -1,10 +1,7 @@
 ## Usage
 
 ### Basic
-* Best practices in file and application organization for Angular 2.
-* Using Bootstrap as framwork ui template, you can override it with your own theme.
-* Ready to go build system
-* Hot Module Replacement with Webpack and [@angularclass/hmr](https://github.com/angularclass/angular2-hmr) and [@angularclass/hmr-loader](https://github.com/angularclass/angular2-hmr-loader)
+* Simple Iframe approach to allow payments in web applications
 
 
 ### Quick start
