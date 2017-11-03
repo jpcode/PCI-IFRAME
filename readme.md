@@ -1,15 +1,5 @@
 ## Usage
 
-### Basic
-* Simple Iframe approach to allow payments in web applications
-* You can create your own separate fields or you can combine in one field
-  * ccn 
-  * exp 
-  * zip
-  * cvc *** pending
-  * pay *** pending
-
-
 ### Quick start
 **Make sure you have Node version >= 5.0 and NPM >= 3**
 
@@ -29,6 +19,17 @@ node sdk/server/api.js
 
 ```
 go to [http://0.0.0.0:99](http://0.0.0.0:99) or [http://localhost:99](http://localhost:99) in your browser
+
+### Basic
+* Simple Iframe approach to allow payments in web applications
+* You can create your own separate fields or you can combine in one field
+  * ccn 
+  * exp 
+  * zip
+  * cvc *** pending
+  * pay *** pending one field UX
+
+  
 
 ## File Structure
 
