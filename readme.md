@@ -3,7 +3,7 @@
 ### Basic
 * Simple Iframe approach to allow payments in web applications
 * You can create your own separate fields or you can combine in one field
-* ccn 
+  * ccn 
   * exp 
   * cvc *** pending
   * zip
