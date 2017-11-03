@@ -88,7 +88,16 @@
     </main>
   </div>
   <script>
-    /* Floating */
+  
+   (function(){
+      var ccn = Sdkpay.createElement('ccn', '#example2-card-number');
+      var exp = Sdkpay.createElement('exp', '#example2-card-expiry');
+      var zip = Sdkpay.createElement('zip', '#example2-card-zip');
+
+
+    var elements = [ ccn, exp, zip ];
+
+
 
      var inputs = document.querySelectorAll('.cell.example.example2 .input');
      Array.prototype.forEach.call(inputs, function(input) {
@@ -106,19 +115,8 @@
           }
         });
       });
-   /* End of floating */
-
-   /* Using the sdk */
-
-    var sdk = Sdkpay.init('c16f8a7e-43c2-4f2c-89b4-05533a71edb9');
-
-  // create an CCN
-    Sdkpay.createElement('ccn', '#example2-card-number');
-    Sdkpay.createElement('exp', '#example2-card-expiry');
-    Sdkpay.createElement('zip', '#example2-card-zip');
-
-   /* End of sdk */
-
+   
+   })();
   </script>
 </body>
 </html>
