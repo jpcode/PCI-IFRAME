@@ -5,8 +5,8 @@
 * You can create your own separate fields or you can combine in one field
   * ccn 
   * exp 
-  * cvc *** pending
   * zip
+  * cvc *** pending
   * pay *** pending
 
 
