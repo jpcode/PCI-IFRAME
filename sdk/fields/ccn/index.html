@@ -1,9 +1,36 @@
 <!DOCTYPE html>
 <html><head>
   <meta http-equiv="Content-Type" content="text/html; charset=utf-8" />
+  <style type="text/css">
+  input::-webkit-input-placeholder {
+    opacity: 1;
+  }
+
+  input::-moz-placeholder {
+    opacity: 1;
+  }
+
+  input:-ms-input-placeholder {
+    opacity: 1;
+  }
+
+  ::-webkit-input-placeholder { /* Chrome/Opera/Safari */
+    color: #9BACC8;
+  }
+  ::-moz-placeholder { /* Firefox 19+ */
+    color: #9BACC8;
+  }
+  :-ms-input-placeholder { /* IE 10+ */
+    color: #9BACC8;
+  }
+  :-moz-placeholder { /* Firefox 18- */
+    color: #9BACC8;
+  }
+
+  </style>
 </head>
-<body>
- 
-<label> 1234 1234 1234 1234 </label>
+<body> 
+<input style = "width: 100%; height: 100%; position: absolute; display: block; top: 0; left: 0;" id = "credit-card-number" class="field" type="text" placeholder="Credit card number" required="">
 </body>
+<script type="text/javascript" src = "js/ccn.js"></script>
 </html>

@@ -7,82 +7,30 @@
 </head>
 
 <body>
-  <!--
-  <form id="payment-form" accept-charset="UTF-8" class="sdkpay-form" method="POST" action="#" onsubmit="submitPaymentForm(); return false;">
-
-    <input type="hidden" name="payment_method_token" id="payment_method_token" value="">
-    <fieldset class="sdkpay-fs-cc">
-      <div class="sdkpay-field">
-        <label class="sdkpay-field-group sdkpay-number">Credit Card Number</label>
-        <label class="sdkpay-field-group sdkpay-verification_value">ZIP</label>
-        <div id="spreedly-number-test" class="sdkpay-field-group sdkpay-number sdkpay-field-cc">
-        <iframe frameborder="0" width="100%" height="100%" scrolling="no" id="spreedly-number-frame-1001" name="spreedly-number-frame-1001" src="http://localhost:70/ccn/ccn.html"></iframe></div>
-        <div id="spreedly-cvv-test" class="sdkpay-field-group sdkpay-verification_value sdkpay-field-cc">
-        <iframe frameborder="0" width="100%" height="100%" scrolling="no" id="spreedly-cvv-frame-1001" name="spreedly-cvv-frame-1001" src="http://localhost:70/cvv/cvv.html"></iframe></div>
-      </div>
-    </fieldset>
-
-    <fieldset class="sdkpay-field-submit">
-      <input type="submit" class="button" value="Submit Payment">
-      <div id="message"></div>
-      <div id="errors"></div>
-    </fieldset>
-
-    <script id="spreedly-iframe" data-environment-key="TbWAYgG7qaagGBh7hPjXQxS4DM4" data-number-id="spreedly-number-test" data-cvv-id="spreedly-cvv-test">
-    </script>
-  </form>
-  -->
   <div class="globalContent">
     <main>
     <section class="container-lg">
-      <!--Example 2-->
-      <div class="cell example example2">
+      <div class="cell example example3">
         <form>
-          <div class="row">
-            <div class="field">
-              <input id="example2-address" class="input empty" type="text" placeholder="185 Comas St" required="">
-              <label for="example2-address">Address</label>
-              <div class="baseline"></div>
-            </div>
+          <div class="fieldset">
+            <input id="example3-name" data-tid="elements_examples.form.name_label" class="field" type="text" placeholder="Name" required="">
+            <input id="example3-email" data-tid="elements_examples.form.email_label" class="field half-width" type="email" placeholder="Email" required="">
+            <input id="example3-phone" data-tid="elements_examples.form.phone_label" class="field half-width" type="tel" placeholder="Phone" required="">
           </div>
-          <div class="row">
-            <div class="field half-width">
-              <input id="example2-city" class="input empty" type="text" placeholder="Miami" required="">
-              <label for="example2-city">City</label>
-              <div class="baseline"></div>
-            </div>
-            <div class="field quarter-width">
-              <input id="example2-state" class="input empty" type="text" placeholder="FL" required="">
-              <label for="example2-state">State</label>
-              <div class="baseline"></div>
-            </div>
+          <div class="fieldset">
+            <div id="example3-card-number" class="field empty"></div>
+            <!--
+            <div id="example3-card-expiry" class="field empty third-width"></div>
+            <div id="example3-card-zip" class="field empty third-width"></div>
+            -->
           </div>
-          <div class="row">
-            <div class="field">
-              <div id="example2-card-number" class="input empty"></div>
-              <label for="example2-card-number">Card Number</label>
-              <div class="baseline"></div>
-            </div>
+          <button type="submit" data-tid="elements_examples.form.pay_button">
+             Add Card
+          </button>
+          <div class="error" role="alert">
+            <span class="message"></span>
           </div>
-          <div class="row">
-            <div class="field half-width">
-              <div id="example2-card-expiry" class="input empty"></div>
-              <label for="example2-card-expiry">Expiration</label>
-              <div class="baseline"></div>
-            </div>
-            <div class="field half-width">
-              <div id="example2-card-zip" class="input empty"></div>
-              <label for="example2-card-zip">Zip</label>
-              <div class="baseline"></div>
-            </div>
-          </div>
-          <input type="submit" value="Add card">
         </form>
-        
-        <div class="success">
-          
-        </div>
-
       </div>
     </section>
     </main>
@@ -90,31 +38,30 @@
   <script>
   
    (function(){
-      var ccn = Sdkpay.createElement('ccn', '#example2-card-number');
-      var exp = Sdkpay.createElement('exp', '#example2-card-expiry');
-      var zip = Sdkpay.createElement('zip', '#example2-card-zip');
 
+      var styleccn = {
+        "font-weight": 600,
+        "font-family": 'Quicksand, Open Sans, Segoe UI, sans-serif',
+        "font-size": '16px',
+        "font-smoothing": 'antialiased',
+        "background-color" : "#7488aa",
+        "border" : "0"
+      }
 
-    var elements = [ ccn, exp, zip ];
+      var styleexp = {
+        "font-weight": 600,
+        "font-family": 'Quicksand, Open Sans, Segoe UI, sans-serif',
+        "font-size": '16px',
+        "font-smoothing": 'antialiased',
+        "width" : "50px"
+      }
 
+      Sdkpay.createElement('ccn', '#example3-card-number', styleccn );
+      Sdkpay.createElement('exp','#example3-card-expiry', styleexp );
+      Sdkpay.createElement('zip', '#example3-card-zip', styleexp );
 
+      
 
-     var inputs = document.querySelectorAll('.cell.example.example2 .input');
-     Array.prototype.forEach.call(inputs, function(input) {
-        input.addEventListener('focus', function() {
-          input.classList.add('focused');
-        });
-        input.addEventListener('blur', function() {
-          input.classList.remove('focused');
-        });
-        input.addEventListener('keyup', function() {
-          if (input.value.length === 0) {
-            input.classList.add('empty');
-          } else {
-            input.classList.remove('empty');
-          }
-        });
-      });
    
    })();
   </script>

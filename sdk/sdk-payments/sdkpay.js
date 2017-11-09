@@ -13,34 +13,52 @@ function Sdkpay(){
     queryTarget[0].appendChild( el );
    }
 
-   this.buildIframe = function( elem, target ){
-    var domain = this.frameOrigin;
-    var elemsAllowed = {
+   this.elemsAllowed = {
         "ccn" : {
-            src : domain + '/fields/ccn'
+            src : this.frameOrigin + '/fields/ccn',
+            id: 'sdk-ccn-iframe',
+            callback: function(){
+                if ( this.style )
+                  Sdkpay.sendMessage( this.id, { 
+                    task : 'setStyle',
+                    message: this.style
+                  });
+            },
+            style : ''
         },
         "exp" : {
-            src : domain + '/fields/exp'
+            src : this.frameOrigin + '/fields/exp',
+            id: 'sdk-exp-iframe',
+            callback: 'sdk-exp-iframe-loaded',
+            style: ''
         },
         "zip" : {
-            src : domain + '/fields/zip'
+            src : this.frameOrigin + '/fields/zip',
+            id: 'sdk-zip-iframe',
+            callback: 'sdk-zip-iframe-loaded',
+            style: ''
         }
     }
-    var iframeObj = elemsAllowed[ elem  ];
+
+   this.buildIframe = function( elem, target, style ){
+    var iframeObj = this.elemsAllowed[ elem  ];
     var ifrm = document.createElement("iframe");
         ifrm.setAttribute("frameborder", 0 );
         ifrm.setAttribute("allowtransparency", true );
         ifrm.setAttribute("scrolling", "no" );
-        ifrm.setAttribute("style","border: none !important; margin: 0px !important; padding: 0px !important; width: 1px !important; min-width: 100% !important; overflow: hidden !important; display: block !important; height: 19.2px;")
+        ifrm.setAttribute("name", iframeObj.id );
+        ifrm.setAttribute("id", iframeObj.id );
         ifrm.setAttribute("src", iframeObj.src );
+        ifrm.setAttribute("style","height: 21px")
+    iframeObj.style = style;    
     this.mount( ifrm, target );
     return ifrm;
    }
 
-   this.createElement = function( elem, target ){
+   this.createElement = function( elem, target, style ){
         var elemsAllowed = ["ccn", "exp", "zip", "cvc", "pay" ];
         if ( elemsAllowed.indexOf( elem ) > -1 ){
-            return this.buildIframe( elem, target );
+            return this.buildIframe( elem, target, style );
         }else{
             throw "Currently elems allowed are " + elemsAllowed.toString(); 
         }
@@ -51,16 +69,12 @@ function Sdkpay(){
         var origin = event.origin;
         var data = event.data;
         var msg = null;
-        // validate for origin
-        if ( data === "iframesReady" ){
-            Sdkpay.ready();
-        }/*
-        else if ( data === "errors"){
-            Sdkpay.error()
-        }else if (msg = data.match(/errors: (.*)/i)){
-            Sdkpay.error( JSON.parse(r[1]) );
+        var origin = data.origin;
+        var property = data.property;
+        var input = Sdkpay.elemsAllowed[ origin ];
+        if ( input && input.hasOwnProperty(property) && typeof input[property] === 'function' ){
+            input[property]();
         }
-        */
    }
    this.log = function( log ){
         if ( window.console && this.developer ){
@@ -69,9 +83,7 @@ function Sdkpay(){
    }
       
    this.init = function( api_key ){
-        this.log("init sdk" +  api_key ); 
         this.api_key = api_key;
-        this.numberFrameId = "spreedly-number-frame-1001";
    }
 
    this.setStyle = function(e, t) {
@@ -79,9 +91,9 @@ function Sdkpay(){
         this.sendMessage("style(" + e + "): " + t)
    }
 
-   this.sendMessage = function(e) {
+   this.sendMessage = function(numberFrameId, e) {
         var f =  this.frameOrigin;
-        document.getElementById(this.numberFrameId).contentWindow.postMessage(e, f );
+        document.getElementById(numberFrameId).contentWindow.postMessage(e, f );
    }
    window.addEventListener("message", this.buildMessageHandler, false);
 }
