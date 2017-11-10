@@ -1,9 +1,29 @@
 function Sdkpay(){
    this.developer = true;
    this.frameOrigin = "http://localhost:70";
+   this.callback = null;
+   this.getElementsUsed = function(){
+     var elemsUsed = [];
+     var elems = this.elemsAllowed;
+     for ( var key in elems ){
+        if ( elems.hasOwnProperty( key ) ){
+          var elem = elems[ key ];
+          if ( elem.used ){
+             elemsUsed.push( elem.id );
+          }
+        }
+     }
+     return elemsUsed;
+   }
 
-   this.createToken = function(){
-      return this.sendMessage("getToken")
+   this.createToken = function( callback ){
+      console.log('requesting token');
+      var me = this;
+      this.callback = callback;
+      Sdkpay.sendMessage( this.elemsAllowed.ccn.id, { 
+                    task : 'getToken',
+                    message: me.getElementsUsed()
+                  });
    }
 
    this.mount = function( el, domTarget ){
@@ -21,22 +41,51 @@ function Sdkpay(){
                 if ( this.style )
                   Sdkpay.sendMessage( this.id, { 
                     task : 'setStyle',
-                    message: this.style
+                    message: this.style.base
                   });
             },
-            style : ''
+            focus : function(){
+              console.log( 'focus' );
+            },
+            resolvingToken: function( data ){
+              setTimeout(function(){
+                Sdkpay.callback({
+                success: true,
+                token: data.extraParams
+              })
+              },3000)
+            },
+            style : '',
+            target: '',
+            used : false
         },
         "exp" : {
             src : this.frameOrigin + '/fields/exp',
             id: 'sdk-exp-iframe',
-            callback: 'sdk-exp-iframe-loaded',
-            style: ''
+            callback: function(){
+                if ( this.style )
+                  Sdkpay.sendMessage( this.id, { 
+                    task : 'setStyle',
+                    message: this.style.base
+                  });
+            },
+            style: '',
+            target : '',
+            used: false
         },
         "zip" : {
             src : this.frameOrigin + '/fields/zip',
             id: 'sdk-zip-iframe',
-            callback: 'sdk-zip-iframe-loaded',
-            style: ''
+            callback: function(){
+                if ( this.style )
+                  Sdkpay.sendMessage( this.id, { 
+                    task : 'setStyle',
+                    message: this.style.base
+                  });
+            },
+            style: '',
+            target: '',
+            used: false
         }
     }
 
@@ -50,7 +99,9 @@ function Sdkpay(){
         ifrm.setAttribute("id", iframeObj.id );
         ifrm.setAttribute("src", iframeObj.src );
         ifrm.setAttribute("style","height: 21px")
-    iframeObj.style = style;    
+    iframeObj.style = style; 
+    iframeObj.target = target;
+    iframeObj.used = true;   
     this.mount( ifrm, target );
     return ifrm;
    }
@@ -72,8 +123,13 @@ function Sdkpay(){
         var origin = data.origin;
         var property = data.property;
         var input = Sdkpay.elemsAllowed[ origin ];
-        if ( input && input.hasOwnProperty(property) && typeof input[property] === 'function' ){
-            input[property]();
+        console.log( data );
+        if ( input && input.hasOwnProperty(property) ){
+            if ( typeof input[property] === 'function' )
+              input[ property ]( data );
+            else{
+              //console.log( data )
+            }
         }
    }
    this.log = function( log ){
@@ -97,5 +153,6 @@ function Sdkpay(){
    }
    window.addEventListener("message", this.buildMessageHandler, false);
 }
+
 
 window.Sdkpay = new Sdkpay;

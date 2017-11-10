@@ -26,11 +26,18 @@
   :-moz-placeholder { /* Firefox 18- */
     color: #9BACC8;
   }
+  input {
+        background-color: transparent;
+  }
+  input:focus{
+    outline: none;
+  }
 
   </style>
 </head>
 <body> 
-<input style = "width: 100%; height: 100%; position: absolute; display: block; top: 0; left: 0;" id = "credit-card-number" class="field" type="text" placeholder="Credit card number" required="">
+<input style = "width: 100%; height: 100%; position: absolute; display: block; top: 0; left: 0;" id = "input" class="field" type="text" placeholder="Credit card number" required="">
 </body>
+<script type="text/javascript" src = "../share/helper.js"></script>
 <script type="text/javascript" src = "js/ccn.js"></script>
 </html>

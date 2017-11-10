@@ -11,7 +11,7 @@
     <main>
     <section class="container-lg">
       <div class="cell example example3">
-        <form>
+        <form onsubmit="event.preventDefault();  submitPaymentForm();">
           <div class="fieldset">
             <input id="example3-name" data-tid="elements_examples.form.name_label" class="field" type="text" placeholder="Name" required="">
             <input id="example3-email" data-tid="elements_examples.form.email_label" class="field half-width" type="email" placeholder="Email" required="">
@@ -19,18 +19,18 @@
           </div>
           <div class="fieldset">
             <div id="example3-card-number" class="field empty"></div>
-            <!--
             <div id="example3-card-expiry" class="field empty third-width"></div>
             <div id="example3-card-zip" class="field empty third-width"></div>
-            -->
+            
           </div>
           <button type="submit" data-tid="elements_examples.form.pay_button">
              Add Card
           </button>
-          <div class="error" role="alert">
-            <span class="message"></span>
+          <div id = "error" class="error" role="alert">
+            <span id = "errorMessage" class="message"></span>
           </div>
         </form>
+        <div id = "loader" class="loading-mask"></div>
       </div>
     </section>
     </main>
@@ -40,30 +40,65 @@
    (function(){
 
       var styleccn = {
-        "font-weight": 600,
-        "font-family": 'Quicksand, Open Sans, Segoe UI, sans-serif',
-        "font-size": '16px',
-        "font-smoothing": 'antialiased',
-        "background-color" : "#7488aa",
-        "border" : "0"
+        base : {
+          "font-weight": 600,
+          "font-family": 'Quicksand, Open Sans, Segoe UI, sans-serif',
+          "font-size": '16px',
+          "font-smoothing": 'antialiased',
+          "border" : "0",
+          "color" : "#fff"
+        },
+        invalid : {
+
+        }
       }
 
       var styleexp = {
-        "font-weight": 600,
-        "font-family": 'Quicksand, Open Sans, Segoe UI, sans-serif',
-        "font-size": '16px',
-        "font-smoothing": 'antialiased',
-        "width" : "50px"
+        base : {
+          "font-weight": 600,
+          "font-family": 'Quicksand, Open Sans, Segoe UI, sans-serif',
+          "font-size": '16px',
+          "font-smoothing": 'antialiased',
+          "width" : "70px",
+          "border" : "0",
+          "color" : "#fff"
+        },
+        invalid: {
+
+        }
       }
 
+      /*
+         Default true , set validations false to get a server validations
+       */
+
+      Sdkpay.init("OsXtdOtYbs4ABltnhOLDgcoRJt1i6qEs",{
+        validations : false
+      });
       Sdkpay.createElement('ccn', '#example3-card-number', styleccn );
       Sdkpay.createElement('exp','#example3-card-expiry', styleexp );
-      Sdkpay.createElement('zip', '#example3-card-zip', styleexp );
-
-      
-
-   
+      Sdkpay.createElement('zip', '#example3-card-zip', styleexp ); 
    })();
+
+   function submitPaymentForm() {
+    // make your own validations
+    var validate = true;
+    var options = {};
+    var elemError = document.getElementById('error');
+    var elemErrorMessage = document.getElementById('errorMessage');
+    elemErrorMessage.innerHtml = '';
+    var loader = document.getElementById("loader");
+    loader.style.display = "block";
+    Sdkpay.createToken( function( result ){
+        loader.style.display = "none";
+        console.log( result );
+        if ( result.success ){
+          document.getElementById("errorMessage").textContent= result.token;
+        }
+    });
+   }
+
+
   </script>
 </body>
 </html>
