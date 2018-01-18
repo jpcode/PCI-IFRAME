@@ -29,6 +29,74 @@ go to [http://0.0.0.0:99](http://0.0.0.0:99) or [http://localhost:99](http://loc
   * cvc *** pending
   * pay *** pending one field UX
 
+
+###
+
+```javascript
+
+(function(){
+
+      var styleccn = {
+        base : {
+          "font-weight": 600,
+          "font-family": 'Quicksand, Open Sans, Segoe UI, sans-serif',
+          "font-size": '16px',
+          "font-smoothing": 'antialiased',
+          "border" : "0",
+          "color" : "#fff"
+        },
+        invalid : {
+
+        }
+      }
+
+      var styleexp = {
+        base : {
+          "font-weight": 600,
+          "font-family": 'Quicksand, Open Sans, Segoe UI, sans-serif',
+          "font-size": '16px',
+          "font-smoothing": 'antialiased',
+          "width" : "70px",
+          "border" : "0",
+          "color" : "#fff"
+        },
+        invalid: {
+
+        }
+      }
+
+      /*
+         Default true , set validations false to get a server validations
+       */
+
+      Sdkpay.init("OsXtdOtYbs4ABltnhOLDgcoRJt1i6qEs",{
+        validations : false
+      });
+      Sdkpay.createElement('ccn', '#example3-card-number', styleccn );
+      Sdkpay.createElement('exp','#example3-card-expiry', styleexp );
+      Sdkpay.createElement('zip', '#example3-card-zip', styleexp ); 
+   })();
+
+   function submitPaymentForm() {
+    // make your own validations
+    var validate = true;
+    var options = {};
+    var elemError = document.getElementById('error');
+    var elemErrorMessage = document.getElementById('errorMessage');
+    elemErrorMessage.innerHtml = '';
+    var loader = document.getElementById("loader");
+    loader.style.display = "block";
+    Sdkpay.createToken( function( result ){
+        loader.style.display = "none";
+        console.log( result );
+        if ( result.success ){
+          document.getElementById("errorMessage").textContent= result.token;
+        }
+    });
+   }
+
+``` 
+
 ### Error Handler
 
 <section>
