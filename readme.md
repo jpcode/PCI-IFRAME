@@ -29,8 +29,43 @@ go to [http://0.0.0.0:99](http://0.0.0.0:99) or [http://localhost:99](http://loc
   * cvc *** pending
   * pay *** pending one field UX
 
+### Your own template, following BASIC configuration
 
-### Simple Example
+```html
+
+ <div class="globalContent">
+    <main>
+    <section class="container-lg">
+      <div class="cell example example3">
+        <form onsubmit="event.preventDefault();  submitPaymentForm();">
+          <div class="fieldset">
+            <input id="example3-name" data-tid="elements_examples.form.name_label" class="field" type="text" placeholder="Name" required="">
+            <input id="example3-email" data-tid="elements_examples.form.email_label" class="field half-width" type="email" placeholder="Email" required="">
+            <input id="example3-phone" data-tid="elements_examples.form.phone_label" class="field half-width" type="tel" placeholder="Phone" required="">
+          </div>
+          <div class="fieldset">
+            <div id="example3-card-number" class="field empty"></div>
+            <div id="example3-card-expiry" class="field empty third-width"></div>
+            <div id="example3-card-zip" class="field empty third-width"></div>
+            
+          </div>
+          <button type="submit" data-tid="elements_examples.form.pay_button">
+             Add Card
+          </button>
+          <div id = "error" class="error" role="alert">
+            <span id = "errorMessage" class="message"></span>
+          </div>
+        </form>
+        <div id = "loader" class="loading-mask"></div>
+      </div>
+    </section>
+    </main>
+  </div>
+
+```
+
+
+### Simple JS
 
 ```javascript
 
