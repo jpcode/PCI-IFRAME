@@ -31,6 +31,9 @@ go to [http://0.0.0.0:99](http://0.0.0.0:99) or [http://localhost:99](http://loc
 
 ### Your own template, following BASIC configuration
 
+Easy to add your own template/ui/ux, just is needed add simple fields that represent supported: ccn,exp,zip,cvc,pay using your own CSS.
+
+
 ```html
 
  <div class="globalContent">
