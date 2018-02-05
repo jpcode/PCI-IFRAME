@@ -25,7 +25,7 @@
       }
     }
     function sendMessage( msg ){
-      window.parent.postMessage( msg, "*");
+      window.parent.postMessage( msg, SDKConfig.config.origin );
     }
     window.addEventListener('message', receiveMessage, false );
     sendMessage( setMessage( 'callback' ) );

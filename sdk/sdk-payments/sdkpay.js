@@ -1,3 +1,11 @@
+/**
+ * @name SdkPay 
+ * @version version 1.0
+ * @author John Cardenas(jpcode)
+ * @fileoverview
+ * The library allows custom UX payments
+ */
+
 function Sdkpay(){
    this.developer = true;
    this.frameOrigin = "http://localhost:70";
@@ -17,7 +25,6 @@ function Sdkpay(){
    }
 
    this.createToken = function( callback ){
-      console.log('requesting token');
       var me = this;
       this.callback = callback;
       Sdkpay.sendMessage( this.elemsAllowed.ccn.id, { 
@@ -29,7 +36,6 @@ function Sdkpay(){
    this.mount = function( el, domTarget ){
     if ( !domTarget )  throw "Missing argument. Make sure to call mount() with a valid DOM element or selector;";
     var queryTarget = document.querySelectorAll( domTarget );
-    //queryTarget[0].removeChild(queryTarget[0].firstChild);
     queryTarget[0].appendChild( el );
    }
 

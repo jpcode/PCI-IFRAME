@@ -1,7 +1,13 @@
+/*
+    ***postmessage security concern,
+    If you want a more security you can add origin for sendMessage, see example:
+    https://developer.mozilla.org/en-US/docs/Web/API/Window/postMessage
+*/
+
 (function() {
     var inputId = 'input';
     var elem = document.getElementById( inputId );
-    
+    var api = SDKConfig.config.api;
     var tasks = {
       setStyle : function( style ){
         for ( var key in style ){
@@ -15,8 +21,7 @@
           dociframe = window.parent.frames[ elemUsed[ i ] ];
           result[ elemUsed[ i ] ] =  dociframe.document.getElementById("input").value;
         }
-         var url = "http://localhost:5000/token";
-         Helper.ajax.post( url, JSON.stringify( result ), function( response ){
+         Helper.ajax.post( api.token, JSON.stringify( result ), function( response ){
             sendMessage( setMessage("resolvingToken", response ) );
          });  
       }
@@ -38,7 +43,6 @@
     }
     function receiveMessage( event ){
       var data = event.data;
-      console.log( data );
       if ( data.hasOwnProperty('task') ){
         var msg = data.message;
         var fn = tasks[ data['task'] ];
@@ -46,7 +50,7 @@
       }
     }
     function sendMessage( msg ){
-      window.parent.postMessage( msg, "*");
+      window.parent.postMessage( msg, SDKConfig.config.origin );
     }
     window.addEventListener('message', receiveMessage, false );
 
@@ -54,5 +58,4 @@
     sendMessage( setMessage( 'callback' ) );
 })();
 
-console.log( Helper );
 

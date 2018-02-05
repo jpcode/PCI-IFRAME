@@ -1,5 +1,6 @@
 function utils(){
   var ajax = {};
+
   ajax.x = function () {
       var xhr;
 
